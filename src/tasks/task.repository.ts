@@ -34,7 +34,7 @@ export class TaskRepository extends Repository<Task> {
         user: User,
         ): Promise<Task> {
         const {title, description} = createTaskDto;
-
+        console.log(user)
         const task = new Task();
         task.title = title;
         task.description = description;
@@ -42,12 +42,8 @@ export class TaskRepository extends Repository<Task> {
         task.user = user;
         await task.save();
         
-        delete task.user;
-
+        // delete task.user;
+            
         return task;
-    }
-
-    deleteTask() {
-        
     }
 }

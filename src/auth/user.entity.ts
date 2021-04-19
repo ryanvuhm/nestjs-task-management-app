@@ -20,7 +20,7 @@ export class User extends BaseEntity {
     @Column()
     salt: string;
 
-    @OneToMany(type => Task, task => task.user, {eager: true})
+    @OneToMany(() => Task, task => task.user, {eager: true})
     tasks: Task[];
 
     async validationUserPassword(password: string): Promise<boolean> {
@@ -28,4 +28,5 @@ export class User extends BaseEntity {
         return hash === this.password;
 
     }
+
 }
