@@ -26,6 +26,8 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+Tools I used to complete this project:
+
 [Postman](https://www.postman.com/) platform to develop and test API.
 
 [PgAdminV4](https://www.pgadmin.org/) database management tool.
