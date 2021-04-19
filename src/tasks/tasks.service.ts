@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, Param, ParseIntPipe } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/auth/user.entity';
 import { CreateTaskDTO } from './dto/create-task.dto';
 import { getTaskFilterDTO } from './dto/get-tasks-filter.dto';
 import { TaskStatus } from './task-status.enum';
@@ -15,8 +16,11 @@ export class TasksService {
     ) {}
 
     // Return the array Task
-    async getTasks(filterDto:getTaskFilterDTO): Promise<Task[]>{
-        return this.taskRepository.getTasks(filterDto);
+    async getTasks(
+            filterDto:getTaskFilterDTO,
+            user: User,
+        ): Promise<Task[]>{
+        return this.taskRepository.getTasks(filterDto, user);
     }
     
     async getTaskByID(@Param('id', ParseIntPipe) id:number): Promise<Task> {
@@ -27,37 +31,13 @@ export class TasksService {
             }
             return found;
         }
-    // getTaskID(id: string): Task {
-    //     const found =  this.tasks.find(task => task.id === id);
 
-    //     if (!found) {
-    //         throw new NotFoundException(`Task with ID "${id}" not found`);
-    //     }
-    //     return found;
-    // }
-
-    // createTask(CreateTaskDTO: CreateTaskDTO): Task {
-
-    //     const {title, description} = CreateTaskDTO;
-
-    //     const task: Task = {
-    //         id: uuidv4(),
-    //         title,
-    //         description, 
-    //         status: TaskStatus.OPEN,
-    //     };
-    //     // push the task to the array Task above
-    //     this.tasks.push(task);
-    //     return task;
-    // }
-    async createTask(createTaskDto: CreateTaskDTO): Promise<Task> {
-        return this.taskRepository.createTask(createTaskDto);
-    }
-
-    // deleteTask(id: string): void {
-    //     const found = this.getTaskID(id);
-    //     this.tasks = this.tasks.filter(task => task.id !== found.id);
-    // }
+    async createTask(
+        createTaskDto: CreateTaskDTO,
+        user: User,    
+        ): Promise<Task> {
+        return this.taskRepository.createTask(createTaskDto, user);
+    } 
 
     async deleteTask(id: number): Promise<void> {
         const result = await this.taskRepository.delete(id);
@@ -75,9 +55,4 @@ export class TasksService {
         return task;
     }
 
-    // updateTaskStatus(id:string, status: TaskStatus): Task {
-    //     const task = this.getTaskID(id);
-    //     task.status = status;
-    //     return task;
-    // }
 }
